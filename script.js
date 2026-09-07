@@ -96,7 +96,7 @@ const solutions = [
 
 const grid = document.getElementById('solutionsGrid');
 grid.innerHTML = solutions.map(s => `
-  <article class="solution-card">
+  <article class="solution-card reveal">
     <span class="solution-icon">${s.icon}</span>
     <h3>${s.title}</h3>
     <p>${s.text}</p>
@@ -182,3 +182,90 @@ const header = document.querySelector('.site-header');
 window.addEventListener('scroll', () => {
   header.style.boxShadow = window.scrollY > 8 ? '0 8px 24px -18px rgba(6,14,54,.5)' : 'none';
 }, { passive: true });
+
+// ===== Reduced motion flag =====
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ===== Marquee / ticker (calm infinite scroll) =====
+(function marquee(){
+  const el = document.getElementById('marquee');
+  if (!el) return;
+  const items = [
+    "Automatización & Domótica",
+    "Redes LAN / WAN",
+    "Fibra óptica & cableado estructurado",
+    "Seguridad electrónica",
+    "Videovigilancia 24/7",
+    "Control de accesos biométricos",
+    "Infraestructura IT & Data Centers",
+    "Ciberseguridad",
+    "Eficiencia energética",
+    "Aire acondicionado técnico"
+  ];
+  const one = items.map(t => `<span class="marquee-item">${t}</span>`).join('');
+  const track = document.createElement('div');
+  track.className = 'marquee-track';
+  // duplicate the sequence so the loop is seamless (-50% keyframe)
+  track.innerHTML = one + one;
+  el.appendChild(track);
+})();
+
+// ===== Scroll reveal (IntersectionObserver + stagger) =====
+(function scrollReveal(){
+  if (REDUCE_MOTION) return;
+
+  // stagger children within these containers
+  document.querySelectorAll('.hero-inner, .solutions-grid, .enfoque-grid').forEach(group => {
+    group.querySelectorAll(':scope > .reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i * 80) + 'ms';
+    });
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+// ===== Hero stats count-up =====
+(function countUp(){
+  if (REDUCE_MOTION) return;
+  const dts = document.querySelectorAll('.hero-stats dt');
+
+  const animate = (el) => {
+    const raw = el.textContent.trim();
+    const m = raw.match(/^(\d+)(.*)$/);
+    if (!m) return;
+    const target = parseInt(m[1], 10);
+    const suffix = m[2] || '';
+    if (target <= 1) return;                 // nothing to count for "1"
+    const duration = 1200;
+    const startTime = performance.now();
+    el.textContent = '0' + suffix;
+    const tick = (now) => {
+      const p = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);  // ease-out cubic
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target + suffix;
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        animate(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 1 });
+
+  dts.forEach(el => io.observe(el));
+})();

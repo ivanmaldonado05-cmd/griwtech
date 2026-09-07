@@ -229,3 +229,80 @@ p{margin:0 0 1em; color:var(--muted); line-height:1.7;}
   .footer-inner{ flex-wrap:wrap; }
   .footer-nav{ margin-left:0; order:3; width:100%; }
 }
+
+/* ============ SCROLL REVEAL ============ */
+.js .reveal{
+  opacity:0;
+  transform:translateY(26px);
+  transition: opacity .75s var(--ease), transform .75s var(--ease);
+  will-change: opacity, transform;
+}
+.js .reveal.in{ opacity:1; transform:none; }
+
+/* ============ TICKER / MARQUEE ============ */
+.marquee{
+  background: var(--navy);
+  border-top:1px solid var(--line-on-dark);
+  border-bottom:1px solid var(--line-on-dark);
+  overflow:hidden;
+  position:relative;
+}
+.marquee::before,
+.marquee::after{
+  content:""; position:absolute; top:0; bottom:0; width:90px; z-index:2; pointer-events:none;
+}
+.marquee::before{ left:0;  background:linear-gradient(90deg, var(--navy), rgba(6,14,54,0)); }
+.marquee::after { right:0; background:linear-gradient(270deg, var(--navy), rgba(6,14,54,0)); }
+.marquee-track{
+  display:flex; width:max-content; align-items:center;
+  animation: marquee 42s linear infinite;
+}
+.marquee:hover .marquee-track{ animation-play-state:paused; }
+.marquee-item{
+  display:inline-flex; align-items:center; gap:14px;
+  padding:16px 24px; white-space:nowrap;
+  font-size:.92rem; font-weight:500; letter-spacing:.01em; color:#c7cdea;
+}
+.marquee-item::before{
+  content:""; width:6px; height:6px; border-radius:50%;
+  background:var(--orange); flex:0 0 auto;
+}
+.marquee-item:nth-child(even)::before{ background:var(--blue); }
+@keyframes marquee{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+
+/* ============ MICRO-INTERACTIONS ============ */
+.btn:active{ transform:translateY(0) scale(.97); }
+.hero-stats dt{ font-variant-numeric: tabular-nums; }
+
+.solution-icon{ transition: transform .35s var(--ease), background .3s var(--ease); }
+.solution-card:hover .solution-icon{ transform: scale(1.1) rotate(-4deg); }
+.solution-card h3{ transition: color .25s var(--ease); }
+.solution-card:hover h3{ color: var(--blue); }
+.solution-card::after{
+  content:""; position:absolute; left:0; top:0; height:100%; width:3px;
+  background: var(--orange); transform: scaleY(0); transform-origin: top;
+  transition: transform .3s var(--ease);
+}
+.solution-card:hover::after{ transform: scaleY(1); }
+
+.enfoque-icon{ transition: transform .35s var(--ease); }
+.enfoque-card:hover .enfoque-icon{ transform: translateY(-3px) scale(1.06); }
+
+.brand-logo{ transition: transform .3s var(--ease); }
+.brand:hover .brand-logo{ transform: scale(1.04); }
+
+/* ============ ACCESSIBLE FOCUS ============ */
+a:focus-visible, .btn:focus-visible, button:focus-visible{
+  outline:2px solid var(--blue); outline-offset:3px; border-radius:8px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .js .reveal{ opacity:1 !important; transform:none !important; }
+  .marquee-track{ animation:none; flex-wrap:wrap; width:100%; justify-content:center; }
+  .solution-card:hover .solution-icon,
+  .enfoque-card:hover .enfoque-icon,
+  .brand:hover .brand-logo{ transform:none; }
+}
