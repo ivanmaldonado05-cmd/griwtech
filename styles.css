@@ -233,9 +233,13 @@ p{margin:0 0 1em; color:var(--muted); line-height:1.7;}
 }
 
 @media (max-width: 620px){
-  .solutions-grid{ grid-template-columns:1fr; }
+  .solutions-grid{ grid-template-columns:repeat(2,1fr); gap:12px; }
+  .solution-card{ padding:22px 18px; }
+  .solution-list li{ font-size:.8rem; padding-left:14px; }
   .hero{ padding:110px 0 70px; }
-  .hero-stats{ gap:26px; }
+  .hero-stats{ flex-wrap:wrap; gap:24px 18px; }
+  .hero-stats div{ flex:1 1 calc(50% - 18px); }
+  .hero-stats dd{ max-width:none; }
   .btn-lg{ width:100%; justify-content:center; }
   .hero-actions{ flex-direction:column; }
   .footer-inner{ flex-wrap:wrap; }
