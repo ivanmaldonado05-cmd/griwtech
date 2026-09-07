@@ -1,24 +1,15 @@
 // ===== Year =====
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ===== Random contact rotation (repartir consultas entre los 3 referentes) =====
-const CONTACTS = [
-  { name: "Julio Colman", phone: "595992011205", email: "jcolman@griwtech.com.py" },
-  { name: "Jorge Samudio Vierci", phone: "595981649446", email: "jsvierci@griwtech.com.py" },
-  { name: "David Fleitas", phone: "595994643936", email: "dfleitas@griwtech.com.py" }
-];
+// ===== Contacto (siempre Julio Colman) =====
+const CONTACT = { name: "Julio Colman", phone: "595992011205", email: "jcolman@griwtech.com.py" };
 const WHATSAPP_MESSAGE = "Hola Griwtech, quiero más información sobre sus soluciones.";
 const EMAIL_SUBJECT = "Consulta desde la web";
-
-function randomContact(){
-  return CONTACTS[Math.floor(Math.random() * CONTACTS.length)];
-}
 
 document.querySelectorAll('.js-whatsapp').forEach(el => {
   el.addEventListener('click', e => {
     e.preventDefault();
-    const c = randomContact();
-    const url = `https://wa.me/${c.phone}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+    const url = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
     window.open(url, '_blank', 'noopener');
   });
 });
@@ -26,8 +17,7 @@ document.querySelectorAll('.js-whatsapp').forEach(el => {
 document.querySelectorAll('.js-email').forEach(el => {
   el.addEventListener('click', e => {
     e.preventDefault();
-    const c = randomContact();
-    window.location.href = `mailto:${c.email}?subject=${encodeURIComponent(EMAIL_SUBJECT)}`;
+    window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(EMAIL_SUBJECT)}`;
   });
 });
 
@@ -48,49 +38,118 @@ mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
 // ===== Solutions data + icons (inline SVG, stroke-based, brand line style) =====
 const solutions = [
   {
-    title: "Automatización y domótica",
-    text: "Control inteligente de iluminación, clima y accesos para hogares y edificios.",
+    title: "Servicios generales y Facility Management",
+    items: [
+      "Mantenimiento general de instalaciones",
+      "Electricidad, climatización y servicios técnicos",
+      "Coordinación y supervisión de proveedores",
+      "Mantenimiento preventivo y correctivo"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>`
+  },
+  {
+    title: "Domótica y automatización inteligente",
+    items: [
+      "Diseño de automatizaciones a medida",
+      "Control de iluminación, climatización, cortinas y accesos",
+      "Salas y espacios corporativos inteligentes",
+      "Integración de sistemas en una sola plataforma",
+      "Para viviendas, edificios y empresas"
+    ],
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M9.5 20v-5.5h5V20"/><circle cx="17" cy="7" r="1.4" fill="currentColor" stroke="none"/></svg>`
   },
   {
-    title: "Redes LAN/WAN",
-    text: "Conectividad empresarial robusta y escalable para cada punto de tu operación.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 7.2V13m0 0-5.5 4.3M12 13l5.5 4.3"/></svg>`
-  },
-  {
-    title: "Fibra óptica y cableado",
-    text: "Infraestructura de cableado estructurado pensada para el largo plazo.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17c4-6 6 6 10 0s6 6 8 0"/><circle cx="4" cy="17.3" r="1.1" fill="currentColor" stroke="none"/><circle cx="20" cy="17" r="1.1" fill="currentColor" stroke="none"/></svg>`
-  },
-  {
-    title: "Seguridad electrónica y videovigilancia",
-    text: "Alarmas y cámaras que protegen tu propiedad las 24 horas.",
+    title: "Seguridad electrónica y control de acceso",
+    items: [
+      "CCTV y videovigilancia inteligente",
+      "Control de acceso y biometría",
+      "Videoporteros y gestión de visitantes",
+      "Alarmas y sistemas de seguridad"
+    ],
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="8" width="12" height="8" rx="2"/><path d="M14.5 10.3 21 7v10l-6.5-3.3"/></svg>`
   },
   {
-    title: "Control de accesos biométricos",
-    text: "Ingreso seguro con huella y automatización de portones vehiculares.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2a5 5 0 0 0-5 5c0 4 1 6-1 10"/><path d="M12 2a5 5 0 0 1 5 5c0 1.5-.1 2.7-.3 3.7"/><path d="M8.5 21c1-2 1.5-4 1.5-7a2 2 0 1 1 4 0c0 1.6-.1 2.7-.4 3.7"/><path d="M12 12.5c0 3-.4 5.2-1.6 8"/></svg>`
-  },
-  {
-    title: "Infraestructura IT y data centers",
-    text: "Servidores, racks y soluciones para operaciones críticas de datos.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3.5" width="16" height="6" rx="1.4"/><rect x="4" y="14.5" width="16" height="6" rx="1.4"/><circle cx="7.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17.5" r=".9" fill="currentColor" stroke="none"/></svg>`
+    title: "Refrigeración y climatización",
+    items: [
+      "Venta e instalación de aires acondicionados",
+      "Mantenimiento preventivo y correctivo",
+      "Climatización para oficinas y centros de datos",
+      "Automatización y control de climatización"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M4.5 6 19.5 18M19.5 6 4.5 18"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>`
   },
   {
     title: "Ciberseguridad",
-    text: "Protección de sistemas y datos frente a amenazas digitales.",
+    items: [
+      "Firewall y seguridad perimetral",
+      "Protección de redes y endpoints",
+      "Backup y continuidad de la información",
+      "Evaluación, capacitación y buenas prácticas"
+    ],
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>`
   },
   {
-    title: "Electricidad industrial y eficiencia energética",
-    text: "Instalaciones eléctricas seguras que optimizan el consumo.",
+    title: "Equipamiento tecnológico",
+    items: [
+      "PCs, notebooks y tablets",
+      "Servidores y equipamiento empresarial",
+      "Suministro e instalación",
+      "Renovación tecnológica"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>`
+  },
+  {
+    title: "PCI — Protección contra incendios y alarmas",
+    items: [
+      "Detección y alarma de incendios",
+      "Sistemas de extinción",
+      "Diseño y adecuación de sistemas PCI",
+      "Cumplimiento normativo"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3c1.2 3 4 4.2 4 7.8a4 4 0 0 1-8 0c0-1.6.6-2.6 1.2-3.2.2 1 .9 1.6 1.4 1.6-.4-2.2 0-4.4 1.4-6.2Z"/></svg>`
+  },
+  {
+    title: "Infraestructura tecnológica",
+    items: [
+      "Cableado estructurado y fibra óptica",
+      "Redes LAN y WiFi empresarial",
+      "Switching, routing y seguridad de red",
+      "Racks, data centers y microdata centers",
+      "Implementación y mantenimiento IT"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3.5" width="16" height="6" rx="1.4"/><rect x="4" y="14.5" width="16" height="6" rx="1.4"/><circle cx="7.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17.5" r=".9" fill="currentColor" stroke="none"/></svg>`
+  },
+  {
+    title: "Electricidad y energía continuada",
+    items: [
+      "Instalaciones y adecuaciones eléctricas",
+      "Tableros eléctricos y distribución",
+      "UPS y sistemas de respaldo energético",
+      "Mantenimiento de infraestructura eléctrica",
+      "Energía solar y eficiencia energética"
+    ],
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>`
   },
   {
-    title: "Aire acondicionado técnico",
-    text: "Instalación y mantenimiento de climatización para espacios exigentes.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M4.5 6 19.5 18M19.5 6 4.5 18"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>`
+    title: "Soluciones SaaS y software",
+    items: [
+      "Digitalización y gestión documental",
+      "Almacenamiento y servicios en la nube",
+      "Facturación electrónica y punto de venta",
+      "CRM y sistemas de gestión empresarial",
+      "Soluciones de software especializadas"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18a4 4 0 0 1-.5-8A5 5 0 0 1 16.5 9.5 3.5 3.5 0 0 1 16.5 18H7Z"/></svg>`
+  },
+  {
+    title: "Outsourcing y soporte técnico",
+    items: [
+      "Personal técnico tercerizado",
+      "Help Desk y soporte IT",
+      "Soporte en sitio y remoto",
+      "Cobertura operativa según necesidad"
+    ],
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="13" width="4" height="6.5" rx="1.5"/><rect x="17.5" y="13" width="4" height="6.5" rx="1.5"/><path d="M20 19.5v.3a3 3 0 0 1-3 3h-4"/></svg>`
   }
 ];
 
@@ -99,7 +158,7 @@ grid.innerHTML = solutions.map(s => `
   <article class="solution-card reveal">
     <span class="solution-icon">${s.icon}</span>
     <h3>${s.title}</h3>
-    <p>${s.text}</p>
+    <ul class="solution-list">${s.items.map(i => `<li>${i}</li>`).join('')}</ul>
   </article>
 `).join('');
 
